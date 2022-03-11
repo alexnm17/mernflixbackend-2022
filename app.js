@@ -6,12 +6,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var moviesRouter = require('./routes/movies');
+var bookmarksRouter = require('./routes/bookmarks');
 
 var app = express();
 
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://alejandro:mern123@cluster0.8pyty.mongodb.net/mernflix?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+require('dotenv').config();
+
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() =>  console.log('mymerndb connection successful'))
     .catch((err) => console.error(err));
 
@@ -27,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
+app.use('/bookmarks',bookmarksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
